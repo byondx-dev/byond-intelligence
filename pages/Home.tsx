@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import HeroOrb from '../components/HeroOrb';
 import { BlurText, Stepper, ScrollStack, ShinyText, Magnet, SplitText, CountUp, AuroraText } from '../components/AnimatedUI';
-import { QUIZ_STEPS } from '../constants';
+import { QUIZ_IDS } from '../constants';
 import { Link, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const Hero = () => {
+    const { t } = useTranslation();
     return (
         <section className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
             <motion.div
@@ -53,7 +55,7 @@ const Hero = () => {
                             />
 
                             <span className="text-xs font-medium text-white/50 relative z-50">///</span>
-                            <span className="text-sm text-white/90 relative z-90">Byond Intelligence presents</span>
+                            <span className="text-sm text-white/90 relative z-90">{t('hero.subtitle')}</span>
                         </div>
                     </motion.div>
 
@@ -64,7 +66,7 @@ const Hero = () => {
                         }}
                         className="absolute top-[40%] left-0 w-full text-3xl md:text-7xl font-display font-bold tracking-tight px-4 text-center text-white z-40 md:static md:w-auto md:mb-8 md:z-auto"
                     >
-                        Automation by <AuroraText>AI</AuroraText>
+                        {t('hero.title_start')} <AuroraText>{t('hero.title_highlight')}</AuroraText>
                     </motion.h1>
 
                     <motion.div
@@ -76,12 +78,12 @@ const Hero = () => {
                     >
                         <Link to="/solutions">
                             <button className="bg-white text-black px-6 py-2 md:px-8 md:py-4 rounded-full font-medium hover:bg-gray-200 transition-colors shadow-xl shadow-white/10">
-                                Solutions
+                                {t('hero.cta_solutions')}
                             </button>
                         </Link>
                         <Link to="/contact">
                             <button className="bg-white/5 border border-white/10 text-white px-6 py-2 md:px-8 md:py-4 rounded-full font-medium hover:bg-white/10 transition-colors backdrop-blur-md">
-                                Contact
+                                {t('hero.cta_contact')}
                             </button>
                         </Link>
                     </motion.div>
@@ -92,13 +94,14 @@ const Hero = () => {
 };
 
 const Quiz = () => {
+    const { t } = useTranslation();
     const [step, setStep] = useState(1);
     const [answers, setAnswers] = useState<Record<number, string>>({});
     const navigate = useNavigate();
 
     const handleOptionClick = (option: string) => {
         setAnswers({ ...answers, [step]: option });
-        if (step < QUIZ_STEPS.length) {
+        if (step < QUIZ_IDS.length) {
             setStep(step + 1);
         } else {
             // Finish
@@ -106,15 +109,16 @@ const Quiz = () => {
         }
     };
 
-    const currentQuestion = QUIZ_STEPS.find(s => s.id === step);
+    const steps = t('quiz.steps', { returnObjects: true }) as Record<string, { id: number, question: string, options: string[] }>;
+    const currentQuestion = steps[step.toString()];
 
     return (
         <section className="py-24 bg-gray-50 dark:bg-gray-900/50 relative overflow-hidden">
             <div className="container mx-auto px-6 text-center">
-                <SplitText text="Need Assessment" className="text-sm font-mono text-blue-500 mb-4 tracking-widest uppercase" />
-                <h2 className="text-4xl font-display font-bold mb-12">Find your automation gap</h2>
+                <SplitText text={t('quiz.pre_title')} className="text-sm font-mono text-blue-500 mb-4 tracking-widest uppercase" />
+                <h2 className="text-4xl font-display font-bold mb-12">{t('quiz.title')}</h2>
 
-                <Stepper steps={QUIZ_STEPS.map(s => ({ id: s.id }))} currentStep={step} />
+                <Stepper steps={QUIZ_IDS.map(id => ({ id }))} currentStep={step} />
 
                 <div className="max-w-2xl mx-auto mt-12 bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-3xl p-8 md:p-12 shadow-2xl relative z-10">
                     <AnimatePresence mode='wait'>
@@ -147,20 +151,15 @@ const Quiz = () => {
 }
 
 const ProcessStack = () => {
-    const stackItems = [
-        { title: "Diagnose", desc: "Process Discovery & Data Readiness Check. Wir finden die Lücken." },
-        { title: "Design", desc: "Blueprint für Ihre AI-Architektur. Kein Vendor-Lockin." },
-        { title: "Build", desc: "Entwicklung von Custom Agents & Workflow Automationen." },
-        { title: "Deploy", desc: "Rollout mit Governance, Monitoring und Human-in-the-Loop." },
-        { title: "Scale", desc: "Enablement Ihres Teams. Wir bauen das interne 'AI Center of Excellence'." }
-    ];
+    const { t } = useTranslation();
+    const stackItems = t('process.steps', { returnObjects: true }) as { title: string, desc: string }[];
 
     return (
         <section className="py-24">
             <div className="container mx-auto px-6">
                 <div className="mb-16">
-                    <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">How we work</h2>
-                    <p className="text-xl text-gray-500 max-w-xl">Ein bewährtes Framework für skalierbare Intelligenz.</p>
+                    <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">{t('process.title')}</h2>
+                    <p className="text-xl text-gray-500 max-w-xl">{t('process.subtitle')}</p>
                 </div>
                 <ScrollStack items={stackItems} />
             </div>
@@ -169,6 +168,7 @@ const ProcessStack = () => {
 }
 
 export default function Home() {
+    const { t } = useTranslation();
     return (
         <>
             <Hero />
@@ -176,10 +176,10 @@ export default function Home() {
             <section className="py-24 border-y border-gray-100 dark:border-gray-900">
                 <div className="container mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
                     {[
-                        { label: 'Processes Automated', val: 500, suffix: '+' },
-                        { label: 'Hours Saved / Year', val: 200, suffix: 'k+' },
-                        { label: 'ROI Average', val: 12, suffix: 'x' },
-                        { label: 'Security Score', val: 100, suffix: '%' },
+                        { label: t('metrics.processes'), val: 500, suffix: '+' },
+                        { label: t('metrics.hours'), val: 200, suffix: 'k+' },
+                        { label: t('metrics.roi'), val: 12, suffix: 'x' },
+                        { label: t('metrics.security'), val: 100, suffix: '%' },
                     ].map((metric, i) => (
                         <div key={i}>
                             <div className="text-4xl md:text-6xl font-bold mb-2 text-transparent bg-clip-text bg-gradient-to-b from-gray-800 to-gray-400 dark:from-white dark:to-gray-600">

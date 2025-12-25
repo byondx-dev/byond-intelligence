@@ -1,0 +1,332 @@
+{
+    "nav": {
+        "home": "Startseite",
+        "solutions": "Lösungen",
+        "contact": "Kontakt",
+        "appearance": "Erscheinungsbild",
+        "light": "Hell",
+        "dark": "Dunkel"
+    },
+    "hero": {
+        "subtitle": "Byond Intelligence präsentiert",
+        "title_start": "Automation durch",
+        "title_highlight": "AI",
+        "cta_solutions": "Lösungen",
+        "cta_contact": "Kontakt"
+    },
+    "quiz": {
+        "pre_title": "Bedarfsanalyse",
+        "title": "Finden Sie Ihre Automatisierungslücke",
+        "steps": {
+            "1": {
+                "question": "In welcher Branche sind Sie tätig?",
+                "options": [
+                    "Produktion / Logistik",
+                    "SaaS / Tech",
+                    "Dienstleistung / Agentur",
+                    "Handel / E-Commerce"
+                ]
+            },
+            "2": {
+                "question": "Wie groß ist Ihr Team?",
+                "options": [
+                    "1-10",
+                    "11-50",
+                    "51-200",
+                    "200+"
+                ]
+            },
+            "3": {
+                "question": "Wo drückt der Schuh am meisten?",
+                "options": [
+                    "Zu hohe Prozesskosten",
+                    "Fachkräftemangel / Zeit",
+                    "Fehlende Daten-Transparenz",
+                    "Skalierungsprobleme"
+                ]
+            },
+            "4": {
+                "question": "Wie ist Ihre Datenlage?",
+                "options": [
+                    "Chaos / Excel",
+                    "Solides ERP/CRM",
+                    "Data Warehouse vorhanden",
+                    "Silos (viele Tools)"
+                ]
+            },
+            "5": {
+                "question": "Automatisierungsgrad heute?",
+                "options": [
+                    "Alles manuell",
+                    "Erste Zaps/Skripte",
+                    "Teilautomatisiert",
+                    "Hochentwickelt"
+                ]
+            },
+            "6": {
+                "question": "Compliance Anforderungen?",
+                "options": [
+                    "Standard (DSGVO)",
+                    "Hoch (Fin/Health)",
+                    "Internationale Normen",
+                    "Gering"
+                ]
+            }
+        }
+    },
+    "process": {
+        "title": "Wie wir arbeiten",
+        "subtitle": "Ein bewährtes Framework für skalierbare Intelligenz.",
+        "steps": [
+            {
+                "title": "Diagnose",
+                "desc": "Prozess-Analyse & Data Readiness Check. Wir finden die Lücken."
+            },
+            {
+                "title": "Design",
+                "desc": "Blueprint für Ihre AI-Architektur. Kein Vendor-Lockin."
+            },
+            {
+                "title": "Build",
+                "desc": "Entwicklung von Custom Agents & Workflow Automationen."
+            },
+            {
+                "title": "Deploy",
+                "desc": "Rollout mit Governance, Monitoring und Human-in-the-Loop."
+            },
+            {
+                "title": "Scale",
+                "desc": "Enablement Ihres Teams. Wir bauen das interne 'AI Center of Excellence'."
+            }
+        ]
+    },
+    "metrics": {
+        "processes": "Automatisierte Prozesse",
+        "hours": "Gesparte Stunden / Jahr",
+        "roi": "ROI Durchschnitt",
+        "security": "Sicherheits-Score"
+    },
+    "solutions": {
+        "pre_title": "Lösungen & Anwendungsfälle",
+        "title": "Echter Impact.",
+        "subtitle": "Wir bauen keine Demos, sondern produktive Systeme. Hier sind 24+ konkrete Ansätze, wie wir Ihr Geschäft beschleunigen.",
+        "filter_all": "Alle",
+        "roi_label": "ROI Impact",
+        "models_title": "Engagement Modelle",
+        "select_btn": "Auswählen",
+        "duration": "Dauer",
+        "outcome": "Ergebnis"
+    },
+    "use_cases": {
+        "s1": {
+            "category": "Sales",
+            "title": "Lead Scoring AI",
+            "description": "Automatische Qualifizierung von Inbound-Leads basierend auf Interaktionsdaten.",
+            "roi": "+30% Conversion Rate"
+        },
+        "s2": {
+            "category": "Sales",
+            "title": "Hyper-Personalized Outreach",
+            "description": "Generierung individueller Ansprachen für Cold-Calls/Mails.",
+            "roi": "2x Reply Rate"
+        },
+        "s3": {
+            "category": "Sales",
+            "title": "Proposal Generator",
+            "description": "Erstellt maßgeschneiderte Angebote aus CRM-Daten in Sekunden.",
+            "roi": "-80% Zeitaufwand"
+        },
+        "su1": {
+            "category": "Support",
+            "title": "L1 Support Bot",
+            "description": "Löst 60% der Standardanfragen autonom via Chat/Mail.",
+            "roi": "-40% Ticket Volume"
+        },
+        "su2": {
+            "category": "Support",
+            "title": "Ticket Triage & Routing",
+            "description": "KI analysiert Sentiment und Dringlichkeit zur Zuweisung.",
+            "roi": "Schnellere Resolution Time"
+        },
+        "su3": {
+            "category": "Support",
+            "title": "QA Summaries",
+            "description": "Fasst lange Support-Threads für Nachfolger/Management zusammen."
+        },
+        "op1": {
+            "category": "Ops",
+            "title": "Invoice Automation",
+            "description": "Auslesen und Verbuchen von Rechnungen (OCR + LLM).",
+            "roi": "99% Genauigkeit"
+        },
+        "op2": {
+            "category": "Ops",
+            "title": "Stammdaten-Hygiene",
+            "description": "Bereinigt Dubletten und füllt fehlende Felder im ERP.",
+            "roi": "Saubere BI-Daten"
+        },
+        "op3": {
+            "category": "Ops",
+            "title": "Mahnwesen-Copilot",
+            "description": "Erstellt kontextsensitive Zahlungserinnerungen."
+        },
+        "hr1": {
+            "category": "HR",
+            "title": "Resume Screener",
+            "description": "Matcht CVs gegen Job-Requirements und rankt Kandidaten.",
+            "roi": "-50% Screening Zeit"
+        },
+        "hr2": {
+            "category": "HR",
+            "title": "Onboarding Buddy",
+            "description": "Interaktiver Bot für alle Fragen neuer Mitarbeiter.",
+            "roi": "Schnellere Productivity"
+        },
+        "hr3": {
+            "category": "HR",
+            "title": "Policy Q&A",
+            "description": "Mitarbeiter chatten mit dem Handbuch/Richtlinien."
+        },
+        "fi1": {
+            "category": "Finance",
+            "title": "Cashflow Forecasting",
+            "description": "Predictive Analytics für Liquiditätsengpässe.",
+            "roi": "Bessere Planungssicherheit"
+        },
+        "fi2": {
+            "category": "Finance",
+            "title": "Anomaly Detection",
+            "description": "Erkennt ungewöhnliche Buchungen in Echtzeit.",
+            "roi": "Fraud Prevention"
+        },
+        "fi3": {
+            "category": "Finance",
+            "title": "Monatsabschluss Assist",
+            "description": "Automatisiert Abgrenzungen und Report-Erstellung."
+        },
+        "le1": {
+            "category": "Legal",
+            "title": "Contract Analysis",
+            "description": "Extrahiert Klauseln und Risiken aus Verträgen.",
+            "roi": "Risikominimierung"
+        },
+        "le2": {
+            "category": "Legal",
+            "title": "DSGVO Workflow",
+            "description": "Automatisiert Auskunftsersuchen und Löschungen."
+        },
+        "it1": {
+            "category": "IT",
+            "title": "Incident Summarizer",
+            "description": "Erstellt Post-Mortems aus Logs und Chats.",
+            "roi": "Faster Learning"
+        },
+        "it2": {
+            "category": "IT",
+            "title": "Log Intelligence",
+            "description": "Erkennt Muster in Server-Logs bevor Systemausfall."
+        },
+        "it3": {
+            "category": "IT",
+            "title": "SecOps Assistant",
+            "description": "Priorisiert Security Alerts für Analysten."
+        },
+        "mk1": {
+            "category": "Marketing",
+            "title": "Content Engine",
+            "description": "Erstellt Blog/Social Posts im Brand Voice.",
+            "roi": "Scale Output"
+        },
+        "mk2": {
+            "category": "Marketing",
+            "title": "SEO Brief Generator",
+            "description": "Analysiert Top-Resultate und erstellt Briefings."
+        },
+        "mk3": {
+            "category": "Marketing",
+            "title": "Creative Variants",
+            "description": "Generiert Ad-Copy Varianten für A/B Tests."
+        },
+        "lg1": {
+            "category": "Logistics",
+            "title": "Predictive Maintenance",
+            "description": "Sagt Maschinenausfälle voraus.",
+            "roi": "Less Downtime"
+        },
+        "lg2": {
+            "category": "Logistics",
+            "title": "Route Optimization",
+            "description": "Plant dynamische Routen basierend auf Traffic/Wetter."
+        }
+    },
+    "packages": {
+        "0": {
+            "title": "Discovery Audit",
+            "price": "Ab €2.500",
+            "duration": "2 Wochen",
+            "outcome": "Status Quo & Roadmap",
+            "features": [
+                "Prozess-Analyse",
+                "Data Readiness Check",
+                "ROI Kalkulation",
+                "Tech Stack Empfehlung"
+            ]
+        },
+        "1": {
+            "title": "Pilot Sprint",
+            "price": "Ab €9.000",
+            "duration": "4-6 Wochen",
+            "outcome": "MVP / Proof of Concept",
+            "features": [
+                "1 Use Case Umsetzung",
+                "Agent/Automation Build",
+                "Team Onboarding",
+                "Performance Review"
+            ]
+        },
+        "2": {
+            "title": "Enterprise Transformation",
+            "duration": "3-12 Monate",
+            "outcome": "Full AI Integration",
+            "features": [
+                "Custom AI Agents",
+                "RAG Pipeline Setup",
+                "Governance & Security",
+                "Internal Enablement Academy"
+            ]
+        }
+    },
+    "contact": {
+        "hero_title": "Let's build the future.",
+        "hero_subtitle": "Bereit für den nächsten Schritt? Buchen Sie ein unverbindliches Kennenlernen oder schreiben Sie uns.",
+        "office_title": "Office Berlin",
+        "book_call": "[ 15min Discovery Call buchen ]",
+        "sent_title": "Nachricht gesendet!",
+        "sent_desc": "Wir melden uns innerhalb von 24 Stunden.",
+        "form": {
+            "name_placeholder": "Name",
+            "name_error": "Name ist zu kurz",
+            "email_placeholder": "Email",
+            "email_error": "Ungültige Email",
+            "company_placeholder": "Firma",
+            "company_error": "Firma erforderlich",
+            "message_placeholder": "Wie können wir helfen?",
+            "message_error": "Nachricht bitte etwas ausführlicher",
+            "privacy_label": "Ich stimme der Verarbeitung meiner Daten gemäß der Datenschutzerklärung zu.",
+            "privacy_error": "Datenschutz muss akzeptiert werden",
+            "submit_btn": "Anfrage absenden",
+            "submitting": "Sende..."
+        }
+    },
+    "footer": {
+        "tagline": "Integration von KI in jede Ebene der Unternehmensabläufe. Von der Strategie zur sicheren Ausführung.",
+        "sitemap": "Sitemap",
+        "legal": "Rechtliches",
+        "rights": "Alle Rechte vorbehalten.",
+        "sub_rights": "Ein Unternehmen von ByondX Enterprise",
+        "imprint": "Impressum",
+        "privacy": "Datenschutz",
+        "security": "Sicherheit",
+        "language": "Sprache"
+    }
+}

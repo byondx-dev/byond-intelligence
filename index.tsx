@@ -2,6 +2,10 @@ import React, { createContext, useState, useEffect, ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
 import { Theme } from './types';
+import './i18n';
+import './index.css';
+import '@fontsource/inter';
+import '@fontsource/geist-sans';
 
 interface ThemeContextType {
   theme: Theme;
