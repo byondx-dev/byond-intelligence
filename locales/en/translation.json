@@ -74,6 +74,105 @@
             }
         }
     },
+    "analysis": {
+        "hooks": {
+            "production": [
+                "In production, every second counts.",
+                "Logistics is now a data business.",
+                "Supply chain efficiency is your lever.",
+                "Machines run, but processes stall?",
+                "Industry 4.0 waits for no one."
+            ],
+            "saas": [
+                "Tech teams should code, not manage.",
+                "Scaling needs automation, not micromanagement.",
+                "SaaS lives on speed.",
+                "Your stack is modern, but ops are manual?",
+                "Growth hacking starts with internal processes."
+            ],
+            "agency": [
+                "Selling hours is good, automating results is better.",
+                "Agency life: Creativity instead of admin chaos.",
+                "Your clients pay for performance, not administration.",
+                "Time is your most valuable resource.",
+                "Service excellence needs smart processes."
+            ],
+            "retail": [
+                "Retail never sleeps, neither should your processes.",
+                "Retail margins are won through efficiency.",
+                "Customer expectations rise faster than your team grows.",
+                "From warehouse to customer: Data must flow.",
+                "Retail is Detail – and Automation."
+            ]
+        },
+        "pains": {
+            "costs": [
+                "High process costs eat up your margin.",
+                "Every manual click costs you real money.",
+                "Your OpEx is higher than necessary.",
+                "Inefficiency burns your budget every month.",
+                "Cutting costs today means: Automating processes."
+            ],
+            "time": [
+                "Good people are hard to find – relieve your best team.",
+                "Is your team drowning in routine tasks?",
+                "Time for strategic work is often completely missing.",
+                "Burnout from admin tasks is a real risk.",
+                "Recruiting is expensive, automation is scalable."
+            ],
+            "transparency": [
+                "Flying blind is deadly in the modern market.",
+                "Without real-time data, you make gut decisions.",
+                "Data silos prevent a 360-degree view.",
+                "You sit on data but don't use it.",
+                "Transparency is the first step to optimization."
+            ],
+            "scaling": [
+                "Growth brings chaos if systems don't grow with it.",
+                "Manual processes don't scale linearly.",
+                "More revenue shouldn't mean more headaches.",
+                "Bottlenecks slow down your expansion.",
+                "Scaling needs digital assembly lines."
+            ]
+        },
+        "solutions": {
+            "chaos": [
+                "Excel is not a database replacement. We structure your chaos.",
+                "Say goodbye to error-prone spreadsheets.",
+                "We turn your spreadsheet deserts into structured data.",
+                "Excel was yesterday. Intelligent databases are today.",
+                "We turn chaos into gold (data)."
+            ],
+            "erp": [
+                "Your ERP is strong, but are you using its full API power?",
+                "A good CRM is just the start – integration brings value.",
+                "Let your ERP finally talk to other tools.",
+                "Your system foundation is good. Now we build intelligence on top.",
+                "ERP data is the fuel for our AI Agents."
+            ],
+            "warehouse": [
+                "Perfect starting point! We put AI directly on your Warehouse.",
+                "You have the data – we deliver the predictive intelligence.",
+                "Your Data Warehouse is ready for the next level: AI.",
+                "From storage to action: We activate your assets.",
+                "High-End Setup! Here we can extract maximum automation."
+            ],
+            "silos": [
+                "Breaking silos is our specialty.",
+                "We build bridges between your island solutions.",
+                "No more copy-pasting between tools.",
+                "We orchestrate your tool landscape into a symphony.",
+                "Integration instead of isolation: We connect your world."
+            ]
+        },
+        "closings": [
+            "Save nerves and time. Let's talk.",
+            "End the frustration. Start automation.",
+            "Your potential is huge. Let's unlock it together.",
+            "Become a pioneer in your industry.",
+            "The first step to an autonomous company starts here."
+        ]
+    },
     "process": {
         "title": "How we work",
         "subtitle": "A proven framework for scalable intelligence.",
@@ -105,6 +204,165 @@
         "hours": "Hours Saved / Year",
         "roi": "ROI Average",
         "security": "Security Score"
+    },
+    "industries": {
+        "title": "AI in every sector.",
+        "subtitle": "No matter your niche, intelligence scales your impact.",
+        "gastro": {
+            "title": "Gastronomy & Hospitality",
+            "desc": "From Cafe to Star Cuisine.",
+            "c1": {
+                "title": "Smart Menu",
+                "desc": "AI analyzes margin vs. popularity to engineer the perfect menu."
+            },
+            "c2": {
+                "title": "No-Show Prevention",
+                "desc": "Automated WhatsApp confirmations reduce empty tables."
+            },
+            "c3": {
+                "title": "Predictive Prep",
+                "desc": "Know exactly how many burgers to prep based on weather & events."
+            },
+            "c4": {
+                "title": "Staff Scheduling",
+                "desc": "AI shifts based on predicted rush hours."
+            }
+        },
+        "fashion": {
+            "title": "Fashion & Retail",
+            "desc": "Boutiques, Franchises & Niche Brands.",
+            "c1": {
+                "title": "Inventory Intelligence",
+                "desc": "Never run out of bestsellers (e.g. Abayas, Evening Wear)."
+            },
+            "c2": {
+                "title": "Virtual Stylist",
+                "desc": "Recommend matching Hijabs/Accessories via image recognition."
+            },
+            "c3": {
+                "title": "Trend spotting",
+                "desc": "AI scans social media to predict the next seasonal hit."
+            },
+            "c4": {
+                "title": "Return Reduction",
+                "desc": "Size recommendation engines aimed at specific cuts."
+            }
+        },
+        "care": {
+            "title": "Healthcare & Nursing",
+            "desc": "Clinics, Care Homes & Practices.",
+            "c1": {
+                "title": "Patient Monitoring",
+                "desc": "AI alerts staff only when critical vitals change."
+            },
+            "c2": {
+                "title": "Shift Planning",
+                "desc": "Auto-filling gaps in nursing schedules instantly."
+            },
+            "c3": {
+                "desc": "Voice-to-Text for patient documentation & coding."
+            },
+            "c4": {
+                "title": "Medication Check",
+                "desc": "Auto-check for drug interactions."
+            }
+        },
+        "supermarket": {
+            "title": "Supermarkets & Chains",
+            "desc": "Groceries & Daily Needs.",
+            "c1": {
+                "title": "Dynamic Pricing",
+                "desc": "Adjust prices based on expiration dates to reduce waste."
+            },
+            "c2": {
+                "title": "Shelf Vision",
+                "desc": "Cameras detect empty shelves and trigger restock alerts."
+            },
+            "c3": {
+                "desc": "Open/close registers based on real-time queue analysis."
+            },
+            "c4": {
+                "title": "Cold Chain Alert",
+                "desc": "IoT sensors warn of temp fluctuations."
+            }
+        },
+        "construction": {
+            "title": "Construction & Engineering",
+            "desc": "Civil Engineering to Set Design.",
+            "c1": {
+                "title": "Safety Sentinel",
+                "desc": "Cameras detect PPE violations in real-time."
+            },
+            "c2": {
+                "title": "Blueprint Analysis",
+                "desc": "LLMs extract requirements from 500-page specs instantly."
+            },
+            "c3": {
+                "desc": "Predict concrete/material delays before they happen."
+            },
+            "c4": {
+                "title": "Drone Surveying",
+                "desc": "3D terrain models in minutes, not days."
+            }
+        },
+        "public": {
+            "title": "Public Sector & Education",
+            "desc": "Schools, Universities, Offices.",
+            "c1": {
+                "title": "Auto-Grading",
+                "desc": "Assistants to grade standardized tests instantly."
+            },
+            "c2": {
+                "title": "Citizen Support",
+                "desc": "navigation through bureaucratic forms via Chat."
+            },
+            "c3": {
+                "desc": "Turn 50 years of paper into searchable data."
+            },
+            "c4": {
+                "title": "Procurement Check",
+                "desc": "Corruption prevention via pattern recognition."
+            }
+        },
+        "robotics": {
+            "title": "Robotics & IoT",
+            "desc": "Manufacturing & Automation.",
+            "c1": {
+                "title": "Predictive Maintenance",
+                "desc": "The machine calls the technician before it breaks."
+            },
+            "c2": {
+                "title": "Quality Vision",
+                "desc": "Micro-defect detection at 1000fps."
+            },
+            "c3": {
+                "desc": "Optimize warehouse robot paths to prevent jams."
+            },
+            "c4": {
+                "title": "Digital Twin",
+                "desc": "Simulate production lines before building."
+            }
+        },
+        "finance": {
+            "title": "Finance & Legal",
+            "desc": "Banks, Insurance, Consultancies.",
+            "c1": {
+                "title": "Fraud Detection",
+                "desc": "Spot anomalies in million-line ledgers."
+            },
+            "c2": {
+                "title": "Contract Review",
+                "desc": "Risk assessment in seconds, not days."
+            },
+            "c3": {
+                "title": "Market Sentiment",
+                "desc": "Trade signals based on global news analysis."
+            },
+            "c4": {
+                "title": "Customer Segmentation",
+                "desc": "Micro-clusters for hyper-personalized offers."
+            }
+        }
     },
     "solutions": {
         "pre_title": "Solutions & Use Cases",

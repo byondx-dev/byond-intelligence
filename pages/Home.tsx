@@ -5,6 +5,7 @@ import { BlurText, Stepper, ScrollStack, ShinyText, Magnet, SplitText, CountUp, 
 import { QUIZ_IDS } from '../constants';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { generateAnalysis } from '../utils/quizGenerators';
 
 const Hero = () => {
     const { t } = useTranslation();
@@ -97,15 +98,23 @@ const Quiz = () => {
     const { t } = useTranslation();
     const [step, setStep] = useState(1);
     const [answers, setAnswers] = useState<Record<number, string>>({});
+    // Updated state type to match new generator output (keys)
+    const [analysisResult, setAnalysisResult] = useState<{ mainTextKeys: string[], subTextKeys: string[], tags: string[] } | null>(null);
     const navigate = useNavigate();
 
     const handleOptionClick = (option: string) => {
-        setAnswers({ ...answers, [step]: option });
+        const newAnswers = { ...answers, [step]: option };
+        setAnswers(newAnswers);
+
         if (step < QUIZ_IDS.length) {
             setStep(step + 1);
         } else {
-            // Finish
-            navigate('/contact?source=quiz_complete');
+            // Generate Analysis instead of navigating
+            // Using a timeout to simulate "processing" for better UX
+            setTimeout(() => {
+                const result = generateAnalysis(newAnswers);
+                setAnalysisResult(result);
+            }, 600);
         }
     };
 
@@ -113,36 +122,75 @@ const Quiz = () => {
     const currentQuestion = steps[step.toString()];
 
     return (
-        <section className="py-24 bg-gray-50 dark:bg-gray-900/50 relative overflow-hidden">
+        <section className="py-24 bg-gray-50 dark:bg-gray-900/50 relative overflow-hidden" id="quiz-section">
             <div className="container mx-auto px-6 text-center">
                 <SplitText text={t('quiz.pre_title')} className="text-sm font-mono text-blue-500 mb-4 tracking-widest uppercase" />
                 <h2 className="text-4xl font-display font-bold mb-12">{t('quiz.title')}</h2>
 
-                <Stepper steps={QUIZ_IDS.map(id => ({ id }))} currentStep={step} />
+                {!analysisResult && <Stepper steps={QUIZ_IDS.map(id => ({ id }))} currentStep={step} />}
 
-                <div className="max-w-2xl mx-auto mt-12 bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-3xl p-8 md:p-12 shadow-2xl relative z-10">
+                <div className="max-w-3xl mx-auto mt-12 bg-white dark:bg-black border border-gray-200 dark:border-gray-800 rounded-3xl p-8 md:p-12 shadow-2xl relative z-10 overflow-hidden">
                     <AnimatePresence mode='wait'>
-                        <motion.div
-                            key={step}
-                            initial={{ opacity: 0, x: 20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            exit={{ opacity: 0, x: -20 }}
-                            transition={{ duration: 0.3 }}
-                        >
-                            <h3 className="text-2xl font-medium mb-8">{currentQuestion?.question}</h3>
-                            <div className="grid grid-cols-1 gap-4">
-                                {currentQuestion?.options.map((opt, i) => (
-                                    <button
-                                        key={i}
-                                        onClick={() => handleOptionClick(opt)}
-                                        className="w-full p-4 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-blue-500 hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-all text-left flex justify-between group"
-                                    >
-                                        <span>{opt}</span>
-                                        <span className="opacity-0 group-hover:opacity-100 transition-opacity">→</span>
-                                    </button>
-                                ))}
-                            </div>
-                        </motion.div>
+                        {analysisResult ? (
+                            <motion.div
+                                key="result"
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ duration: 0.5 }}
+                                className="text-left"
+                            >
+                                <div className="flex flex-wrap gap-2 mb-6">
+                                    {analysisResult.tags.map((tag, i) => (
+                                        <span key={i} className="text-xs font-mono py-1 px-3 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400">
+                                            {tag}
+                                        </span>
+                                    ))}
+                                </div>
+                                <h3 className="text-3xl md:text-4xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">
+                                    {analysisResult.mainTextKeys.map(key => t(key)).join(' ')}
+                                </h3>
+                                <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
+                                    {analysisResult.subTextKeys.map(key => t(key)).join(' ')}
+                                </p>
+
+                                <div className="p-6 bg-gray-50 dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 mb-8">
+                                    <h4 className="font-bold mb-2">Empfohlener nächster Schritt:</h4>
+                                    <p className="text-sm text-gray-500 mb-4">
+                                        Basierend auf Ihrer Situation ("{answers[3]}") empfehlen wir eine gezielte Prozess-Analyse.
+                                    </p>
+                                    <Link to="/contact">
+                                        <button className="w-full py-4 bg-black dark:bg-white text-white dark:text-black rounded-lg font-bold hover:scale-[1.02] transition-transform shadow-lg">
+                                            Kostenloses Strategiegespräch anfordern
+                                        </button>
+                                    </Link>
+                                </div>
+                                <p className="text-xs text-center text-gray-400">
+                                    Unverbindlich & Kostenlos. Wir sparen Ihnen Zeit, keine Nerven.
+                                </p>
+                            </motion.div>
+                        ) : (
+                            <motion.div
+                                key={step}
+                                initial={{ opacity: 0, x: 20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: -20 }}
+                                transition={{ duration: 0.3 }}
+                            >
+                                <h3 className="text-2xl font-medium mb-8">{currentQuestion?.question}</h3>
+                                <div className="grid grid-cols-1 gap-4">
+                                    {currentQuestion?.options.map((opt, i) => (
+                                        <button
+                                            key={i}
+                                            onClick={() => handleOptionClick(opt)}
+                                            className="w-full p-4 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-blue-500 hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-all text-left flex justify-between group"
+                                        >
+                                            <span>{opt}</span>
+                                            <span className="opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+                                        </button>
+                                    ))}
+                                </div>
+                            </motion.div>
+                        )}
                     </AnimatePresence>
                 </div>
             </div>
@@ -167,12 +215,15 @@ const ProcessStack = () => {
     );
 }
 
+import { IndustryShowcase } from '../components/IndustryShowcase';
+
 export default function Home() {
     const { t } = useTranslation();
     return (
         <>
             <Hero />
             <ProcessStack />
+            <IndustryShowcase />
             <section className="py-24 border-y border-gray-100 dark:border-gray-900">
                 <div className="container mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
                     {[
@@ -194,7 +245,7 @@ export default function Home() {
             <div className="bg-black text-white py-12 text-center">
                 <div className="container mx-auto">
                     <p className="text-gray-400 text-sm max-w-3xl mx-auto">
-                        Stepper, ScrollStack, BlurText, ShinyText, Magnet, SplitText, CountUp, SpotlightCard, TiltedCard, TrueFocus, BorderBeam, AnimatedList.
+                        Automation durch AI hat bewiesenermaßen Firmen auf der ganzen Welt geholfen, ihre Effizienz zu steigern und ihre Kosten zu senken.
                     </p>
                 </div>
             </div>

@@ -6,7 +6,8 @@ export default function Orb({
   hoverIntensity = 0.0,
   rotateOnHover = true,
   forceHoverState = false,
-  backgroundColor = '#000000'
+  backgroundColor = '#000000',
+  colorMode = 'cycle' // 'cycle' | 'industry'
 }) {
   const ctnDom = useRef(null);
 
@@ -31,6 +32,7 @@ export default function Orb({
     uniform float rot;
     uniform float hoverIntensity;
     uniform vec3 backgroundColor;
+    uniform float useIndustryMode; // 0.0 = cycle, 1.0 = industry
     varying vec2 vUv;
 
     vec3 rgb2yiq(vec3 c) {
@@ -100,9 +102,16 @@ export default function Orb({
       return vec4(colorIn.rgb / (a + 1e-5), a);
     }
 
-    const vec3 baseColor1 = vec3(0.611765, 0.262745, 0.996078);
-    const vec3 baseColor2 = vec3(0.298039, 0.760784, 0.913725);
-    const vec3 baseColor3 = vec3(0.062745, 0.078431, 0.600000);
+    // Original Colors for Cycle Mode
+    const vec3 origColor1 = vec3(0.611765, 0.262745, 0.996078);
+    const vec3 origColor2 = vec3(0.298039, 0.760784, 0.913725);
+    const vec3 origColor3 = vec3(0.062745, 0.078431, 0.600000);
+
+    // Industry Mode Colors
+    const vec3 indColor1 = vec3(1.0, 0.2, 0.2); // Red base
+    const vec3 indColor2 = vec3(0.1, 0.8, 0.9); // Turquoise Fixed
+    const vec3 indColor3 = vec3(0.05, 0.1, 0.4); // Dark Blue Fixed
+
     const float innerRadius = 0.6;
     const float noiseScale = 0.65;
 
@@ -114,9 +123,19 @@ export default function Orb({
     }
 
     vec4 draw(vec2 uv) {
-      vec3 color1 = adjustHue(baseColor1, hue);
-      vec3 color2 = adjustHue(baseColor2, hue);
-      vec3 color3 = adjustHue(baseColor3, hue);
+      vec3 c1, c2, c3;
+
+      if (useIndustryMode > 0.5) {
+          // Industry Mode: Static Red rotated by Hue, Fixed Turquoise/Blue
+          c1 = adjustHue(indColor1, hue);
+          c2 = indColor2;
+          c3 = indColor3;
+      } else {
+          // Cycle Mode: Rotate ALL original colors by hue
+          c1 = adjustHue(origColor1, hue);
+          c2 = adjustHue(origColor2, hue);
+          c3 = adjustHue(origColor3, hue);
+      }
       
       float ang = atan(uv.y, uv.x);
       float len = length(uv);
@@ -142,10 +161,10 @@ export default function Orb({
       float v2 = smoothstep(1.0, mix(innerRadius, 1.0, n0 * 0.5), len);
       float v3 = smoothstep(innerRadius, mix(innerRadius, 1.0, 0.5), len);
       
-      vec3 colBase = mix(color1, color2, cl);
+      vec3 colBase = mix(c1, c2, cl);
       float fadeAmount = mix(1.0, 0.1, bgLuminance);
       
-      vec3 darkCol = mix(color3, colBase, v0);
+      vec3 darkCol = mix(c3, colBase, v0);
       darkCol = (darkCol + v1) * v2 * v3;
       darkCol = clamp(darkCol, 0.0, 1.0);
       
@@ -203,7 +222,8 @@ export default function Orb({
         hover: { value: 0 },
         rot: { value: 0 },
         hoverIntensity: { value: hoverIntensity },
-        backgroundColor: { value: hexToVec3(backgroundColor) }
+        backgroundColor: { value: hexToVec3(backgroundColor) },
+        useIndustryMode: { value: colorMode === 'industry' ? 1.0 : 0.0 }
       }
     });
 
@@ -259,9 +279,17 @@ export default function Orb({
       const dt = (t - lastTime) * 0.001;
       lastTime = t;
       program.uniforms.iTime.value = t * 0.001;
-      program.uniforms.hue.value = hue + t * 0.05;
+
+      // Update Hue Rotation based on mode
+      if (colorMode === 'industry') {
+        program.uniforms.hue.value = hue; // Static
+      } else {
+        program.uniforms.hue.value = hue + t * 0.05; // Cycling
+      }
+
       program.uniforms.hoverIntensity.value = hoverIntensity;
       program.uniforms.backgroundColor.value = hexToVec3(backgroundColor);
+      program.uniforms.useIndustryMode.value = colorMode === 'industry' ? 1.0 : 0.0;
 
       const effectiveHover = forceHoverState ? 1 : targetHover;
       program.uniforms.hover.value += (effectiveHover - program.uniforms.hover.value) * 0.1;
@@ -284,7 +312,7 @@ export default function Orb({
       gl.getExtension('WEBGL_lose_context')?.loseContext();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hue, hoverIntensity, rotateOnHover, forceHoverState, backgroundColor]);
+  }, [hue, hoverIntensity, rotateOnHover, forceHoverState, backgroundColor, colorMode]);
 
   return <div ref={ctnDom} className="w-full h-full" />;
 }

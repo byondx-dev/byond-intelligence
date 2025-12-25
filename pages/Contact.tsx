@@ -6,11 +6,6 @@ import { TrueFocus, BlurText } from '../components/AnimatedUI';
 import HeroOrb from '../components/HeroOrb';
 import { useTranslation } from 'react-i18next';
 
-// We need to move schema creation inside the component or use a function to inject t() 
-// but zod messages usually need to be static. 
-// A common pattern is to use z.custom or errorMap, but for simplicity, we'll define schema inside the component keying off t().
-// Or better: use basic keys in zod and translate them in the UI helper. 
-// Actually, re-creating schema on render is fine for simple forms.
 
 export default function Contact() {
   const { t } = useTranslation();
@@ -40,7 +35,7 @@ export default function Contact() {
   return (
     <div className="min-h-screen pt-32 pb-20 relative overflow-hidden">
       {/* Subtle Orb for Contact too */}
-      <div className="absolute top-0 right-0 opacity-30 pointer-events-none transform translate-x-1/2 -translate-y-1/2">
+      <div className="absolute top-0 right-0 w-[60rem] h-[60rem] opacity-40 pointer-events-none transform translate-x-1/2 -translate-y-1/2">
         <HeroOrb />
       </div>
 

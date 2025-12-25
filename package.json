@@ -11,6 +11,7 @@
   "dependencies": {
     "@fontsource/geist-sans": "^5.2.5",
     "@fontsource/inter": "^5.2.8",
+    "@heroicons/react": "^2.2.0",
     "@hookform/resolvers": "^5.2.2",
     "framer-motion": "^12.23.26",
     "i18next": "^25.7.3",
