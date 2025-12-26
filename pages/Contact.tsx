@@ -8,7 +8,7 @@ export default function Contact() {
   const { t } = useTranslation();
 
   return (
-    <div className="min-h-screen relative overflow-hidden flex items-center justify-center">
+    <div className="min-h-screen relative overflow-x-hidden flex items-center justify-center">
       {/* Background Ambience */}
       <div className="absolute top-0 right-0 w-[60rem] h-[60rem] opacity-30 pointer-events-none transform translate-x-1/2 -translate-y-1/2">
         <HeroOrb />
