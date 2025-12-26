@@ -14,6 +14,10 @@
         "cta_solutions": "Lösungen",
         "cta_contact": "Kontakt"
     },
+    "welcome": {
+        "title_start": "Willkommen bei Byond",
+        "title_highlight": "Intelligence"
+    },
     "quiz": {
         "pre_title": "Bedarfsanalyse",
         "title": "Finden Sie Ihre Automatisierungslücke",
@@ -260,6 +264,7 @@
                 "desc": "Lücken im Dienstplan automatisch intelligent füllen."
             },
             "c3": {
+                "title": "Doku-Assistent",
                 "desc": "Sprache-zu-Text für Visiten und Abrechnungscodes."
             },
             "c4": {
@@ -279,6 +284,7 @@
                 "desc": "Kameras erkennen leere Regale und alarmieren das Lager."
             },
             "c3": {
+                "title": "Kassen-Management",
                 "desc": "Kassen öffnen/schließen basierend auf Echtzeit-Warteschlangen."
             },
             "c4": {
@@ -298,6 +304,7 @@
                 "desc": "LLMs extrahieren Anforderungen aus 500-Seiten Lastenheften."
             },
             "c3": {
+                "title": "Material-Prognose",
                 "desc": "Beton/Material-Verzögerungen vorhersagen bevor sie passieren."
             },
             "c4": {
@@ -317,6 +324,7 @@
                 "desc": "Navigation durch Bürokratie-Formulare via Chat."
             },
             "c3": {
+                "title": "Akten-Digitalisierung",
                 "desc": "50 Jahre Papierakten in durchsuchbare Daten wandeln."
             },
             "c4": {
@@ -336,6 +344,7 @@
                 "desc": "Mikro-Defekt Erkennung bei 1000fps."
             },
             "c3": {
+                "title": "Weg-Optimierung",
                 "desc": "Lagerroboter-Wege optimieren um Staus zu vermeiden."
             },
             "c4": {
@@ -373,7 +382,8 @@
         "models_title": "Engagement Modelle",
         "select_btn": "Auswählen",
         "duration": "Dauer",
-        "outcome": "Ergebnis"
+        "outcome": "Ergebnis",
+        "select_category_hint": "Wählen Sie Ihre Branche, um relevante AI Cases zu sehen"
     },
     "use_cases": {
         "s1": {
@@ -558,6 +568,13 @@
         "hero_title": "Let's build the future.",
         "hero_subtitle": "Bereit für den nächsten Schritt? Buchen Sie ein unverbindliches Kennenlernen oder schreiben Sie uns.",
         "office_title": "Office Berlin",
+        "checklist": {
+            "title": "Für unser Gespräch vorbereiten:",
+            "i1": "Aktuelle Pain Points & Engpässe",
+            "i2": "Grobes Budget & Zeitrahmen",
+            "i3": "Aktueller Tech Stack (ERP/CRM)",
+            "i4": "Primäres Ziel der Automation"
+        },
         "book_call": "[ 15min Discovery Call buchen ]",
         "sent_title": "Nachricht gesendet!",
         "sent_desc": "Wir melden uns innerhalb von 24 Stunden.",

@@ -63,7 +63,7 @@ const ScrollStackCard: React.FC<{ item: any, index: number, total: number }> = (
     >
       <div className="grid md:grid-cols-2 gap-8 items-center">
         <div>
-          <h3 className="text-4xl font-display font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-violet-500">
+          <h3 className="text-4xl font-display font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-violet-500 pb-2 leading-tight">
             0{index + 1}. {item.title}
           </h3>
           <p className="text-lg text-gray-600 dark:text-gray-300">{item.desc}</p>

@@ -179,18 +179,28 @@ const Footer = () => {
 import ScrollToTop from './components/ScrollToTop';
 import BackToTop from './components/BackToTop';
 
+import WelcomeScreen from './components/WelcomeScreen';
+
 export default function App() {
+  const [showSplash, setShowSplash] = useState(true);
+
   return (
     <BrowserRouter>
       <ScrollToTop />
+      <AnimatePresence mode="wait">
+        {showSplash && (
+          <WelcomeScreen onComplete={() => setShowSplash(false)} />
+        )}
+      </AnimatePresence>
+
       <div className="flex flex-col min-h-screen">
         <Navbar />
         <main className="flex-grow">
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Home isReady={!showSplash} />} />
             <Route path="/solutions" element={<Solutions />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="*" element={<Home />} />
+            <Route path="*" element={<Home isReady={true} />} />
           </Routes>
         </main>
         <Footer />

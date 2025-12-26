@@ -8,12 +8,12 @@ import { UseCase } from '../types';
 import { useTranslation } from 'react-i18next';
 
 export default function Solutions() {
-    const [filter, setFilter] = useState('All');
+    const [filter, setFilter] = useState<string | null>(null);
     const { theme } = useContext(ThemeContext);
     const { t } = useTranslation();
     const categories = [t('solutions.filter_all'), ...Array.from(new Set(USE_CASES.map(u => u.category)))];
 
-    const filteredCases = filter === t('solutions.filter_all') ? USE_CASES : USE_CASES.filter(u => u.category === filter);
+    const filteredCases = filter === t('solutions.filter_all') ? USE_CASES : (filter ? USE_CASES.filter(u => u.category === filter) : []);
 
     const packages = t('packages', { returnObjects: true }) as Record<string, { title: string, price: string, duration: string, outcome: string, features: string[] }>;
 
@@ -35,36 +35,71 @@ export default function Solutions() {
 
                 {/* Categories Filter */}
                 <div className="flex flex-wrap justify-center gap-2 mb-12">
-                    {categories.map(cat => (
-                        <button
+                    {categories.map((cat, i) => (
+                        <motion.button
                             key={cat}
                             onClick={() => setFilter(cat)}
-                            className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${filter === cat ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'}`}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{
+                                opacity: 1,
+                                y: 0,
+                                scale: filter === null ? [1, 1.05, 1] : 1,
+                                borderColor: filter === null ? ['rgba(59,130,246,0)', 'rgba(59,130,246,0.5)', 'rgba(59,130,246,0)'] : 'transparent'
+                            }}
+                            transition={{
+                                delay: i * 0.1,
+                                scale: filter === null ? { duration: 2, repeat: Infinity, delay: i * 0.2 } : {},
+                                borderColor: filter === null ? { duration: 2, repeat: Infinity, delay: i * 0.2 } : {}
+                            }}
+                            className={`px-6 py-3 rounded-full text-sm font-medium transition-all border-2 ${filter === cat ? 'bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-500/30' : 'bg-gray-100 dark:bg-gray-800 border-transparent text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'}`}
                         >
                             {cat}
-                        </button>
+                        </motion.button>
                     ))}
                 </div>
 
-                {/* Use Cases Grid */}
-                <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-32">
-                    {filteredCases.map((useCase) => (
-                        <SpotlightCard key={useCase.id} className="h-full">
-                            <div className="p-8 h-full flex flex-col">
-                                <span className="text-xs font-mono text-blue-500 mb-2 block">{useCase.category}</span>
-                                <h3 className="text-xl font-bold mb-3">{t(`use_cases.${useCase.id}.title`)}</h3>
-                                <p className="text-gray-500 text-sm mb-6 flex-grow">{t(`use_cases.${useCase.id}.description`)}</p>
-                                {/* Check if roi key exists in translation before rendering if possible, or just check returned string isn't key */}
-                                {t(`use_cases.${useCase.id}.roi`) && t(`use_cases.${useCase.id}.roi`) !== `use_cases.${useCase.id}.roi` && (
-                                    <div className="pt-4 border-t border-gray-100 dark:border-gray-800">
-                                        <span className="text-green-500 text-xs font-bold uppercase tracking-wide">{t('solutions.roi_label')}</span>
-                                        <p className="font-medium text-sm">{t(`use_cases.${useCase.id}.roi`)}</p>
+                {/* Use Cases Grid OR Empty State Hint */}
+                <div className="min-h-[400px]">
+                    {!filter ? (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="flex flex-col items-center justify-center py-20 opacity-50"
+                        >
+                            <motion.div
+                                animate={{ y: [0, -10, 0] }}
+                                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                                className="text-4xl mb-4 text-blue-500"
+                            >
+                                ↑
+                            </motion.div>
+                            <p className="text-xl text-gray-500 font-light">{t('solutions.select_category_hint')}</p>
+                        </motion.div>
+                    ) : (
+                        <motion.div
+                            key="grid"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-32"
+                        >
+                            {filteredCases.map((useCase) => (
+                                <SpotlightCard key={useCase.id} className="h-full">
+                                    <div className="p-8 h-full flex flex-col">
+                                        <span className="text-xs font-mono text-blue-500 mb-2 block">{useCase.category}</span>
+                                        <h3 className="text-xl font-bold mb-3">{t(`use_cases.${useCase.id}.title`)}</h3>
+                                        <p className="text-gray-500 text-sm mb-6 flex-grow">{t(`use_cases.${useCase.id}.description`)}</p>
+                                        {t(`use_cases.${useCase.id}.roi`) && t(`use_cases.${useCase.id}.roi`) !== `use_cases.${useCase.id}.roi` && (
+                                            <div className="pt-4 border-t border-gray-100 dark:border-gray-800">
+                                                <span className="text-green-500 text-xs font-bold uppercase tracking-wide">{t('solutions.roi_label')}</span>
+                                                <p className="font-medium text-sm">{t(`use_cases.${useCase.id}.roi`)}</p>
+                                            </div>
+                                        )}
                                     </div>
-                                )}
-                            </div>
-                        </SpotlightCard>
-                    ))}
-                </motion.div>
+                                </SpotlightCard>
+                            ))}
+                        </motion.div>
+                    )}
+                </div>
 
                 {/* Packages Section */}
                 <div className="mb-20">

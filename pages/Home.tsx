@@ -7,15 +7,18 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { generateAnalysis } from '../utils/quizGenerators';
 
-const Hero = () => {
+const Hero = ({ isReady }: { isReady: boolean }) => {
     const { t } = useTranslation();
+
     return (
-        <section className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+        <section
+            className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden bg-white dark:bg-black group"
+        >
             <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 2, ease: "easeOut" }}
-                className="absolute inset-0 flex items-center justify-center pointer-events-none"
+                className="absolute inset-0 flex items-center justify-center pointer-events-none z-10"
             >
                 <HeroOrb />
             </motion.div>
@@ -23,14 +26,14 @@ const Hero = () => {
             <div className="z-10 text-center relative pointer-events-none w-full flex flex-col items-center justify-center min-h-[60vh] md:min-h-0 md:block md:w-auto">
                 <motion.div
                     initial="hidden"
-                    animate="visible"
+                    animate={isReady ? "visible" : "hidden"}
                     variants={{
                         hidden: { opacity: 0 },
                         visible: {
                             opacity: 1,
                             transition: {
-                                delayChildren: 2.0,
-                                staggerChildren: 0.3
+                                delayChildren: 1.0,
+                                staggerChildren: 0.5
                             }
                         }
                     }}
@@ -38,7 +41,7 @@ const Hero = () => {
                     <motion.div
                         variants={{
                             hidden: { opacity: 0, scale: 0.95, filter: 'blur(10px)' },
-                            visible: { opacity: 1, scale: 1, filter: 'blur(0px)', transition: { duration: 0.8, ease: "easeOut" } }
+                            visible: { opacity: 1, scale: 1, filter: 'blur(0px)', transition: { duration: 0.6, ease: "easeOut" } }
                         }}
                         className="absolute top-[35%] left-0 w-full flex justify-center pointer-events-auto z-50 md:static md:w-auto md:mb-8 md:z-auto"
                     >
@@ -63,7 +66,7 @@ const Hero = () => {
                     <motion.h1
                         variants={{
                             hidden: { opacity: 0, scale: 0.95, filter: 'blur(10px)' },
-                            visible: { opacity: 1, scale: 1, filter: 'blur(0px)', transition: { duration: 0.8, ease: "easeOut" } }
+                            visible: { opacity: 1, scale: 1, filter: 'blur(0px)', transition: { duration: 0.6, ease: "easeOut" } }
                         }}
                         className="absolute top-[40%] left-0 w-full text-3xl md:text-7xl font-display font-bold tracking-tight px-4 text-center text-white z-40 md:static md:w-auto md:mb-8 md:z-auto"
                     >
@@ -73,7 +76,7 @@ const Hero = () => {
                     <motion.div
                         variants={{
                             hidden: { opacity: 0, scale: 0.95, filter: 'blur(10px)' },
-                            visible: { opacity: 1, scale: 1, filter: 'blur(0px)', transition: { duration: 0.8, ease: "easeOut" } }
+                            visible: { opacity: 1, scale: 1, filter: 'blur(0px)', transition: { duration: 0.6, ease: "easeOut" } }
                         }}
                         className="absolute bottom-[20%] left-0 w-full flex gap-4 justify-center items-center pointer-events-auto md:static md:w-auto md:mt-0"
                     >
@@ -109,8 +112,6 @@ const Quiz = () => {
         if (step < QUIZ_IDS.length) {
             setStep(step + 1);
         } else {
-            // Generate Analysis instead of navigating
-            // Using a timeout to simulate "processing" for better UX
             setTimeout(() => {
                 const result = generateAnalysis(newAnswers);
                 setAnalysisResult(result);
@@ -217,11 +218,11 @@ const ProcessStack = () => {
 
 import { IndustryShowcase } from '../components/IndustryShowcase';
 
-export default function Home() {
+export default function Home({ isReady = true }: { isReady?: boolean }) {
     const { t } = useTranslation();
     return (
-        <>
-            <Hero />
+        <div className="min-h-screen">
+            <Hero isReady={isReady} />
             <ProcessStack />
             <IndustryShowcase />
             <section className="py-24 border-y border-gray-100 dark:border-gray-900">
@@ -249,6 +250,6 @@ export default function Home() {
                     </p>
                 </div>
             </div>
-        </>
+        </div>
     );
 }

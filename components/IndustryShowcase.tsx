@@ -1,5 +1,7 @@
-import { motion } from 'framer-motion';
+import React, { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import {
     ShoppingBagIcon, ShoppingCartIcon,
     BuildingOfficeIcon as OfficeBuildingIcon, AcademicCapIcon, CpuChipIcon as ChipIcon, ScaleIcon,
@@ -130,10 +132,11 @@ const ICONS: Record<string, any> = {
 };
 
 // --- Sub-Components ---
+// Updated BentoItem to accept style prop for motion values
 const BentoItem = ({
-    title, desc, icon: Icon, theme, delay, spanClass = "", position = "none"
+    title, desc, icon: Icon, theme, delay, spanClass = "", position = "none", style = {}
 }: {
-    title: string; desc: string; icon: any; theme: Theme; delay: number; spanClass?: string; position?: "tl" | "tr" | "bl" | "br" | "none"
+    title: string; desc: string; icon: any; theme: Theme; delay: number; spanClass?: string; position?: "tl" | "tr" | "bl" | "br" | "none"; style?: any
 }) => {
     // Helper to determine layout classes based on position
     const getLayoutClasses = () => {
@@ -179,12 +182,7 @@ const BentoItem = ({
 
     return (
         <motion.div
-            style={getMaskStyle()}
-            variants={{
-                hidden: { opacity: 0, y: 20, scale: 0.95 },
-                visible: { opacity: 1, y: 0, scale: 1 }
-            }}
-            transition={{ type: "spring", stiffness: 50, damping: 20 }}
+            style={{ ...getMaskStyle(), ...style }}
             className={`group relative p-4 md:p-6 rounded-3xl border ${theme.border} ${theme.bg} dark:bg-zinc-900/50 backdrop-blur-sm hover:border-white/20 dark:hover:border-white/20 transition-all hover:shadow-2xl ${theme.shadow} ${spanClass} overflow-hidden flex flex-col ${getLayoutClasses()} md:![mask-image:none] md:![webkit-mask-image:none]`}
         >
             {/* Hover Spotlight */}
@@ -208,6 +206,167 @@ const BentoItem = ({
     );
 };
 
+const IndustrySection = ({ ind, index, t }: { ind: string, index: number, t: any }) => {
+    const theme = THEMES[ind] || THEMES.gastro;
+    const MainIcon = ICONS[ind];
+    const isEven = index % 2 === 0;
+
+    // Scroll Animation Hooks
+    const containerRef = useRef<HTMLDivElement>(null);
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start end", "end start"]
+    });
+
+    // Mobile Animation Values (Docking Effect)
+    // 0.2 (Enter) -> 0.5 (Docked) -> 0.8 (Exit)
+    const opacity = useTransform(scrollYProgress, [0.1, 0.4, 0.6, 0.9], [0, 1, 1, 0]);
+    const scale = useTransform(scrollYProgress, [0.1, 0.4, 0.6, 0.9], [0.8, 1, 1, 0.8]);
+    const blurVal = useTransform(scrollYProgress, [0.1, 0.4, 0.6, 0.9], [10, 0, 0, 10]);
+    const filter = useTransform(blurVal, (v) => `blur(${v}px)`);
+
+    const offset = 50;
+    // TL: -x, -y
+    const xTL = useTransform(scrollYProgress, [0.1, 0.4, 0.6, 0.9], [-offset, 0, 0, -offset]);
+    const yTL = useTransform(scrollYProgress, [0.1, 0.4, 0.6, 0.9], [-offset, 0, 0, -offset]);
+
+    // TR: +x, -y
+    const xTR = useTransform(scrollYProgress, [0.1, 0.4, 0.6, 0.9], [offset, 0, 0, offset]);
+    const yTR = useTransform(scrollYProgress, [0.1, 0.4, 0.6, 0.9], [-offset, 0, 0, -offset]);
+
+    // BL: -x, +y
+    const xBL = useTransform(scrollYProgress, [0.1, 0.4, 0.6, 0.9], [-offset, 0, 0, -offset]);
+    const yBL = useTransform(scrollYProgress, [0.1, 0.4, 0.6, 0.9], [offset, 0, 0, offset]);
+
+    // BR: +x, +y
+    const xBR = useTransform(scrollYProgress, [0.1, 0.4, 0.6, 0.9], [offset, 0, 0, offset]);
+    const yBR = useTransform(scrollYProgress, [0.1, 0.4, 0.6, 0.9], [offset, 0, 0, offset]);
+
+    return (
+        <div ref={containerRef} className="relative">
+            {/* Decorator Line */}
+            <div className={`absolute top-0 ${isEven ? 'left-8' : 'right-8'} w-0.5 h-full bg-gradient-to-b ${theme.gradient} opacity-20 hidden lg:block`} />
+
+            <div className="grid lg:grid-cols-12 gap-8 items-start">
+
+                {/* Sidebar / Header Config */}
+                <div className={`lg:col-span-4 relative lg:sticky lg:top-32 flex flex-col items-center text-center ${isEven ? 'lg:order-1 lg:items-start lg:text-left' : 'lg:order-2 lg:items-end lg:text-right'}`}>
+                    <motion.div
+                        initial={{ opacity: 0, x: isEven ? -50 : 50 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                    >
+                        <div className={`inline-flex p-3 rounded-2xl bg-gradient-to-br ${theme.gradient} bg-opacity-10 mb-6`}>
+                            <MainIcon className="w-8 h-8 text-white mix-blend-overlay" />
+                        </div>
+                        <h3 className="text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-gray-900 via-gray-700 to-gray-900 dark:from-white dark:via-gray-200 dark:to-gray-500 text-gray-900 dark:text-white pb-2 leading-tight">
+                            {t(`industries.${ind}.title`)}
+                        </h3>
+                        <p className="text-lg text-gray-600 dark:text-gray-400 mb-8 border-l-4 border-gray-100 dark:border-gray-800 pl-4">
+                            {t(`industries.${ind}.desc`)}
+                        </p>
+
+                        <Link to="/solutions">
+                            <button className={`hidden lg:inline-flex items-center gap-2 px-6 py-3 rounded-full border ${theme.border} ${theme.text} hover:bg-gray-50 dark:hover:bg-white/5 transition-colors text-sm font-semibold bg-white dark:bg-transparent`}>
+                                Learn more <span aria-hidden="true">→</span>
+                            </button>
+                        </Link>
+                    </motion.div>
+                </div>
+
+                {/* Bento Grid Layout */}
+                <div className={`lg:col-span-8 ${isEven ? 'lg:order-2' : 'lg:order-1 start'}`}>
+                    <div className="relative">
+
+                        {/* MOBILE GRID With Central Orb - 2x2 Cluster */}
+                        <div className="grid grid-cols-2 gap-2 md:hidden relative min-h-[400px]">
+
+                            {/* Absolutely Positioned Central Orb */}
+                            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-0 flex items-center justify-center pointer-events-none w-24 h-24">
+                                <div className="scale-125 opacity-90 w-full h-full">
+                                    <Orb hue={theme.hue} hoverIntensity={0.3} colorMode="industry" />
+                                </div>
+                                <div className="absolute inset-0 flex items-center justify-center z-10">
+                                    <AuroraText className="text-xl font-bold opacity-90">AI</AuroraText>
+                                </div>
+                            </div>
+
+                            {/* Top Left - c1 */}
+                            <BentoItem
+                                title={t(`industries.${ind}.c1.title`, "")}
+                                desc={t(`industries.${ind}.c1.desc`, "")}
+                                icon={ICONS.c1} theme={theme} delay={0.1}
+                                spanClass="col-span-1 h-64"
+                                position="tl"
+                                style={{ opacity, scale, filter, x: xTL, y: yTL }}
+                            />
+
+                            {/* Top Right - c2 */}
+                            <BentoItem
+                                title={t(`industries.${ind}.c2.title`, "")}
+                                desc={t(`industries.${ind}.c2.desc`, "")}
+                                icon={ICONS.c2} theme={theme} delay={0.2}
+                                spanClass="col-span-1 h-64"
+                                position="tr"
+                                style={{ opacity, scale, filter, x: xTR, y: yTR }}
+                            />
+
+                            {/* Bottom Left - c3 */}
+                            <BentoItem
+                                title={t(`industries.${ind}.c3.title`, "")}
+                                desc={t(`industries.${ind}.c3.desc`, "")}
+                                icon={ICONS.c3} theme={theme} delay={0.3}
+                                spanClass="col-span-1 h-64"
+                                position="bl"
+                                style={{ opacity, scale, filter, x: xBL, y: yBL }}
+                            />
+
+                            {/* Bottom Right - c4 */}
+                            <BentoItem
+                                title={t(`industries.${ind}.c4.title`, t('c4.title'))}
+                                desc={t(`industries.${ind}.c4.desc`, t('c4.desc'))}
+                                icon={ICONS.c4} theme={theme} delay={0.4}
+                                spanClass="col-span-1 h-64"
+                                position="br"
+                                style={{ opacity, scale, filter, x: xBR, y: yBR }}
+                            />
+                        </div>
+
+                        {/* DESKTOP GRID - Traditional Bento */}
+                        <div className="hidden md:grid grid-cols-3 gap-4 auto-rows-[200px]">
+                            <BentoItem
+                                title={t(`industries.${ind}.c1.title`, t('c1.title'))}
+                                desc={t(`industries.${ind}.c1.desc`, t('c1.desc'))}
+                                icon={ICONS.c1} theme={theme} delay={0.1}
+                                spanClass="col-span-2 row-span-1"
+                            />
+                            <BentoItem
+                                title={t(`industries.${ind}.c2.title`, t('c2.title'))}
+                                desc={t(`industries.${ind}.c2.desc`, t('c2.desc'))}
+                                icon={ICONS.c2} theme={theme} delay={0.2}
+                                spanClass="col-span-1 row-span-1"
+                            />
+                            <BentoItem
+                                title={t(`industries.${ind}.c3.title`, t('c3.title'))}
+                                desc={t(`industries.${ind}.c3.desc`, t('c3.desc'))}
+                                icon={ICONS.c3} theme={theme} delay={0.3}
+                                spanClass="col-span-1 row-span-1"
+                            />
+                            <BentoItem
+                                title={t(`industries.${ind}.c4.title`, t('c4.title'))}
+                                desc={t(`industries.${ind}.c4.desc`, t('c4.desc'))}
+                                icon={ICONS.c4} theme={theme} delay={0.4}
+                                spanClass="col-span-2 row-span-1"
+                            />
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
 // --- Main Component ---
 export const IndustryShowcase = () => {
     const { t } = useTranslation();
@@ -224,162 +383,53 @@ export const IndustryShowcase = () => {
                     <motion.div
                         initial={{ opacity: 0, scale: 0.9 }}
                         whileInView={{ opacity: 1, scale: 1 }}
-                        className="inline-block mb-4 px-4 py-1.5 rounded-full border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900"
+                        viewport={{ once: true }}
+                        className="relative overflow-hidden inline-block mb-4 px-4 py-1.5 rounded-full border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900"
                     >
-                        <span className="text-sm font-semibold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
+                        {/* Shimmer Effect */}
+                        <motion.div
+                            className="absolute inset-0 top-0 -left-[100%] w-full h-full bg-gradient-to-r from-transparent via-white/40 dark:via-white/10 to-transparent -skew-x-12"
+                            animate={{ left: ['-100%', '200%'] }}
+                            transition={{
+                                repeat: Infinity,
+                                duration: 2,
+                                ease: "linear",
+                                repeatDelay: 1.5
+                            }}
+                        />
+                        <span className="relative z-10 text-sm font-semibold text-gray-900 dark:text-white">
                             Industries
                         </span>
                     </motion.div>
-                    <h2 className="text-5xl md:text-7xl font-display font-bold mb-6 tracking-tight text-gray-900 dark:text-white">
+                    <motion.h2
+                        initial={{ opacity: 0, filter: 'blur(10px)', y: 20 }}
+                        whileInView={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
+                        viewport={{ once: true, margin: "-100px" }}
+                        transition={{ duration: 0.8, ease: "easeOut" }}
+                        className="text-5xl md:text-7xl font-display font-bold mb-6 tracking-tight text-gray-900 dark:text-white"
+                    >
                         {t('industries.title')}
-                    </h2>
-                    <p className="text-xl text-gray-500 dark:text-gray-400">
+                    </motion.h2>
+                    <motion.p
+                        initial={{ opacity: 0, filter: 'blur(10px)', y: 20 }}
+                        whileInView={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
+                        viewport={{ once: true, margin: "-100px" }}
+                        transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+                        className="text-xl text-gray-500 dark:text-gray-400"
+                    >
                         {t('industries.subtitle')}
-                    </p>
+                    </motion.p>
                 </div>
 
                 {/* Industry Grids Stack */}
                 <div className="space-y-32">
-                    {INDUSTRIES.map((ind, index) => {
-                        const theme = THEMES[ind] || THEMES.gastro;
-                        const MainIcon = ICONS[ind];
-
-                        // Alternate alignments for visual interest
-                        const isEven = index % 2 === 0;
-
-                        return (
-                            <motion.div
-                                key={ind}
-                                className="relative"
-                                initial="hidden"
-                                whileInView="visible"
-                                viewport={{ once: true, margin: "-10%" }}
-                                transition={{ staggerChildren: 0.1 }}
-                            >
-                                {/* Decorator Line */}
-                                <div className={`absolute top-0 ${isEven ? 'left-8' : 'right-8'} w-0.5 h-full bg-gradient-to-b ${theme.gradient} opacity-20 hidden lg:block`} />
-
-                                <div className="grid lg:grid-cols-12 gap-8 items-start">
-
-                                    {/* Sidebar / Header Config */}
-                                    {/* Mobile: Center, Desktop: Left/Right based on isEven */}
-                                    <div className={`lg:col-span-4 relative lg:sticky lg:top-32 flex flex-col items-center text-center ${isEven ? 'lg:order-1 lg:items-start lg:text-left' : 'lg:order-2 lg:items-end lg:text-right'}`}>
-                                        <motion.div variants={{ hidden: { opacity: 0, x: isEven ? -50 : 50 }, visible: { opacity: 1, x: 0 } }}>
-                                            <div className={`inline-flex p-3 rounded-2xl bg-gradient-to-br ${theme.gradient} bg-opacity-10 mb-6`}>
-                                                <MainIcon className="w-8 h-8 text-white mix-blend-overlay" />
-                                            </div>
-                                            <h3 className="text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-gray-900 via-gray-700 to-gray-900 dark:from-white dark:via-gray-200 dark:to-gray-500 text-gray-900 dark:text-white">
-                                                {t(`industries.${ind}.title`)}
-                                            </h3>
-                                            <p className="text-lg text-gray-600 dark:text-gray-400 mb-8 border-l-4 border-gray-100 dark:border-gray-800 pl-4">
-                                                {t(`industries.${ind}.desc`)}
-                                            </p>
-
-                                            <button className={`hidden lg:inline-flex items-center gap-2 px-6 py-3 rounded-full border ${theme.border} ${theme.text} hover:bg-gray-50 dark:hover:bg-white/5 transition-colors text-sm font-semibold bg-white dark:bg-transparent`}>
-                                                Learn more <span aria-hidden="true">→</span>
-                                            </button>
-                                        </motion.div>
-                                    </div>
-
-                                    {/* Bento Grid Layout - Mobile Cluster + Desktop Grid */}
-                                    <div className={`lg:col-span-8 ${isEven ? 'lg:order-2' : 'lg:order-1 start'}`}>
-                                        <div className="relative">
-
-                                            {/* MOBILE GRID With Central Orb - 2x2 Cluster */}
-                                            <div className="grid grid-cols-2 gap-2 md:hidden relative">
-
-                                                {/* Absolutely Positioned Central Orb */}
-                                                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-0 flex items-center justify-center pointer-events-none w-24 h-24">
-                                                    <div className="scale-125 opacity-90 w-full h-full">
-                                                        <Orb hue={theme.hue} hoverIntensity={0.3} colorMode="industry" />
-                                                    </div>
-                                                    <div className="absolute inset-0 flex items-center justify-center z-10">
-                                                        <AuroraText className="text-xl font-bold opacity-90">AI</AuroraText>
-                                                    </div>
-                                                </div>
-
-                                                {/* Card 1: Top Left (TL) */}
-                                                <BentoItem
-                                                    title={t(`industries.${ind}.c1.title`)}
-                                                    desc={t(`industries.${ind}.c1.desc`)}
-                                                    icon={ICONS.c1}
-                                                    theme={theme}
-                                                    delay={0.1}
-                                                    spanClass="col-span-1 h-64"
-                                                    position="tl"
-                                                />
-
-                                                {/* Card 2: Top Right (TR) */}
-                                                <BentoItem
-                                                    title={t(`industries.${ind}.c2.title`)}
-                                                    desc={t(`industries.${ind}.c2.desc`)}
-                                                    icon={ICONS.c2}
-                                                    theme={theme}
-                                                    delay={0.2}
-                                                    spanClass="col-span-1 h-64"
-                                                    position="tr"
-                                                />
-
-                                                {/* Card 3: Bottom Left (BL) */}
-                                                <BentoItem
-                                                    title={t(`industries.${ind}.c3.title`)}
-                                                    desc={t(`industries.${ind}.c3.desc`)}
-                                                    icon={ICONS.c3}
-                                                    theme={theme}
-                                                    delay={0.3}
-                                                    spanClass="col-span-1 h-64"
-                                                    position="bl"
-                                                />
-
-                                                {/* Card 4: Bottom Right (BR) */}
-                                                <BentoItem
-                                                    title={t(`industries.${ind}.c4.title`) || t(`industries.${ind}.c1.title`)}
-                                                    desc={t(`industries.${ind}.c4.desc`) || t(`industries.${ind}.c1.desc`)}
-                                                    icon={ICONS.c4 || ICONS.c1}
-                                                    theme={theme}
-                                                    delay={0.4}
-                                                    spanClass="col-span-1 h-64"
-                                                    position="br"
-                                                />
-                                            </div>
-
-                                            {/* DESKTOP GRID (Hidden on mobile) */}
-                                            <div className="hidden md:grid grid-cols-2 gap-4 auto-rows-[minmax(180px,auto)]">
-                                                <BentoItem
-                                                    title={t(`industries.${ind}.c1.title`)}
-                                                    desc={t(`industries.${ind}.c1.desc`)}
-                                                    icon={ICONS.c1}
-                                                    theme={theme}
-                                                    delay={0.1}
-                                                    spanClass="md:col-span-2"
-                                                />
-
-                                                <BentoItem
-                                                    title={t(`industries.${ind}.c2.title`)}
-                                                    desc={t(`industries.${ind}.c2.desc`)}
-                                                    icon={ICONS.c2}
-                                                    theme={theme}
-                                                    delay={0.2}
-                                                    spanClass={index % 3 === 0 ? "md:row-span-2" : ""}
-                                                />
-
-                                                <BentoItem
-                                                    title={t(`industries.${ind}.c3.title`)}
-                                                    desc={t(`industries.${ind}.c3.desc`)}
-                                                    icon={ICONS.c3}
-                                                    theme={theme}
-                                                    delay={0.3}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </motion.div>
-                        );
-                    })}
+                    {INDUSTRIES.map((ind, index) => (
+                        <IndustrySection key={ind} ind={ind} index={index} t={t} />
+                    ))}
                 </div>
+
             </div>
         </section>
     );
 };
+
